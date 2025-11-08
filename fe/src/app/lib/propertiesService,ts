@@ -1,0 +1,38 @@
+import axios from "axios";
+
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/properties";
+
+const api = axios.create({
+  baseURL: API_BASE_URL,
+});
+
+export const uploadPropertyImage = async (file: File) => {
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const res = await api.post("/upload-image", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res.data;
+};
+
+export const createProperty = async (data: any) => {
+  const res = await api.post("/", data);
+  return res.data;
+};
+
+export const getAllProperties = async () => {
+  const res = await api.get("/");
+  return res.data;
+};
+
+export const getPropertiesByLocation = async (location: string) => {
+  const res = await api.get(`/location/${location}`);
+  return res.data;
+};
+
+export const deleteProperty = async (id: string) => {
+  const res = await api.delete(`/${id}`);
+  return res.data;
+};
